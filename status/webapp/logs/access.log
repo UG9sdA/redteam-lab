@@ -1,0 +1,9 @@
+[2025-05-01 10:15:32] INFO: GET / - 200 OK
+[2025-05-01 10:15:34] INFO: GET /login - 200 OK
+[2025-05-01 10:15:40] WARN: POST /login - 401 Unauthorized
+[2025-05-01 10:16:01] INFO: GET /dashboard - 200 OK
+[2025-05-01 10:17:13] INFO: GET /logs.jsp?file=access.log - 200 OK
+[2025-05-01 10:18:05] WARN: GET /admin - 403 Forbidden
+[2025-05-01 10:18:30] INFO: POST /submit-form - 200 OK
+[2025-05-01 10:19:04] ERROR: GET /nonexistent-page - 404 Not Found
+[2025-05-01 10:20:11] INFO: GET /logout - 200 OK

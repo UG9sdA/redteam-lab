@@ -1,0 +1,4 @@
+zone "redteam.lab" {
+    type master;
+    file "/etc/bind/zones/db.redteam.lab";
+};

@@ -1,0 +1,81 @@
+version: "3.8"
+
+services:
+
+  dns:
+    image: ubuntu/bind9:9.18-22.04_beta
+    container_name: bind9
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - ./dns:/etc/bind
+    networks:
+      redteam_net:
+        ipv4_address: 172.20.0.2
+    restart: unless-stopped
+
+  www:
+    build: ./www
+    container_name: www
+    depends_on: [dns]
+    networks:
+      redteam_net:
+        ipv4_address: 172.20.0.3
+
+  internal:
+    build: ./internal
+    container_name: internal
+    depends_on: [dns]
+    networks:
+      redteam_net:
+        ipv4_address: 172.20.0.4
+
+  status:
+    build: ./status
+    container_name: status
+    depends_on: [dns]
+    networks:
+      redteam_net:
+        ipv4_address: 172.20.0.5
+
+  admin:
+    image: wordpress:latest
+    container_name: admin
+    depends_on: [dns]
+    ports:
+      - "8084:80"
+    environment:
+      WORDPRESS_DB_HOST: admin_db:3306
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppass
+      WORDPRESS_DB_NAME: wpdb
+    volumes:
+      - ./admin/wp-data:/var/www/html
+    depends_on:
+      - admin_db
+      - dns
+    networks:
+      redteam_net:
+        ipv4_address: 172.20.0.6
+
+  admin_db:
+    image: mysql:5.7
+    container_name: admin_mysql
+    environment:
+      MYSQL_DATABASE: wpdb
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppass
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - ./admin/db-data:/var/lib/mysql
+    networks:
+      redteam_net:
+        ipv4_address: 172.20.0.7
+
+networks:
+  redteam_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

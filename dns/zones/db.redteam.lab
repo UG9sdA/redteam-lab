@@ -1,0 +1,17 @@
+$TTL 604800
+@       IN      SOA     ns.redteam.lab. root.redteam.lab. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+; Name servers
+@       IN      NS      ns.redteam.lab.
+
+; A records
+ns              IN      A       172.20.0.2
+www             IN      A       172.20.0.3
+internal        IN      A       172.20.0.4
+status          IN      A       172.20.0.5
+admin           IN      A       172.20.0.6

@@ -1,0 +1,11 @@
+[2025-05-01 10:00:00] SYSTEM: Starting services...
+[2025-05-01 10:00:05] SYSTEM: Tomcat initialized on port 80
+[2025-05-01 10:01:15] CRON: Scheduled cleanup started
+[2025-05-01 10:01:20] CRON: Deleted 3 old session files
+[2025-05-01 10:05:44] AUTH: New user registered: admin@redteam.lab
+[2025-05-01 10:06:10] DB: Connected to MySQL at 172.20.0.3
+[2025-05-01 10:07:29] ERROR: Could not connect to SMTP server
+[2025-05-01 10:10:00] UPDATE: Security patch applied
+[2025-05-01 10:12:42] SYSTEM: Restart signal received
+[2025-05-01 10:12:50] SYSTEM: Services stopped
+[2025-05-01 10:12:55] SYSTEM: Services restarted successfully

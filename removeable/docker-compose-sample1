@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  dns:
+    image: internetsystemsconsortium/bind9:latest
+    container_name: bind9
+    volumes:
+      - ./dns:/etc/bind
+    networks:
+      redteam_net:
+        ipv4_address: 10.6.6.53
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    restart: always
+
+  www:
+    build: ./www.redteam.lab
+    container_name: www
+    networks:
+      redteam_net:
+        ipv4_address: 10.6.6.54
+    restart: always
+
+  internal:
+    build: ./internal.redteam.lab
+    container_name: internal
+    networks:
+      redteam_net:
+        ipv4_address: 10.6.6.55
+    restart: always
+
+  status:
+    build: ./status.redteam.lab
+    container_name: status
+    networks:
+      redteam_net:
+        ipv4_address: 10.6.6.56
+    restart: always
+
+  admin:
+    build: ./admin.redteam.lab
+    container_name: admin
+    networks:
+      redteam_net:
+        ipv4_address: 10.6.6.57
+    restart: always
+
+  wordpress:
+    image: wordpress:4.9
+    container_name: wordpress
+    depends_on:
+      - wpdb
+    environment:
+      WORDPRESS_DB_HOST: wpdb:3306
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_NAME: wp
+    networks:
+      redteam_net:
+        ipv4_address: 10.6.6.60
+    volumes:
+      - ./blog.redteam.lab/html:/var/www/html
+    restart: always
+
+  wpdb:
+    image: mysql:5.7
+    container_name: wpdb
+    restart: always
+    environment:
+      MYSQL_DATABASE: wp
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      redteam_net:
+        ipv4_address: 10.6.6.61
+    volumes:
+      - ./blog.redteam.lab/db:/var/lib/mysql
+
+networks:
+  redteam_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.6.6.0/24
